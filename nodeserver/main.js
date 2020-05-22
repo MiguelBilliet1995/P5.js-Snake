@@ -34,7 +34,7 @@ board.on('ready', function () {
             if (value === 1) {
                 console.log('down');
                 io.sockets.emit('inputChange', {
-                    down: value
+                    button: "down"
                 });
             }
         });
@@ -43,7 +43,7 @@ board.on('ready', function () {
             if (value === 1) {
                 console.log('up');
                 io.sockets.emit('inputChange', {
-                    up: value
+                    button: "up"
                 });
             }
         });
@@ -52,17 +52,19 @@ board.on('ready', function () {
             if (value === 1) {
                 console.log('left');
                 io.sockets.emit('inputChange', {
-                    left: value
+                    button: "left"
                 });
             }
         });
 
-        // this.digitalRead(7, function (value) {
-        //     console.log('right');
-        //     io.sockets.emit('inputChange', {
-        //         right: value
-        //     });
-        // });
+        this.digitalRead(7, function (value) {
+            if (value === 1) {
+                console.log('right');
+                io.sockets.emit('inputChange', {
+                    button: "right"
+                });
+            }
+        });
 
     });
 

@@ -4,12 +4,11 @@ var f;
 var f_special;
 var f_special_activated = false;
 var framert = 5;
-var socket;
+var socket = io.connect("http://localhost:5000");
 
 function setup() {
 
   // socket connetie
-  socket = io.connect("http://localhost:5000");
 
   createCanvas(1000, 1000);
   s = new Snake();
@@ -104,3 +103,29 @@ function draw() {
 }*/
 
 // krijg socket gegevens
+
+socket.on('inputChange', (data) => {
+  console.log(data);
+  switch (data.button) {
+    case 'up':
+      if (s.yspeed !== 1) {
+        s.dir(0, -1);
+      }
+      break;
+    case 'down':
+      if (s.yspeed !== -1) {
+        s.dir(0, 1);
+      }
+      break;
+    case 'left':
+      if (s.xspeed !== 1) {
+        s.dir(-1, 0);
+      }
+      break;
+    case 'right':
+      if (s.xspeed !== -1) {
+        s.dir(1, 0);
+      }
+      break;
+  }
+});
