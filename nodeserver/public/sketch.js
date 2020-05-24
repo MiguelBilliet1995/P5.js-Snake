@@ -82,30 +82,11 @@ function draw() {
   }
 }
 
-/*function keyPressed() {
-  if (keyCode == UP_ARROW) {
-    if (s.yspeed !== 1) {
-      s.dir(0, -1);
-    }
-  } else if (keyCode == DOWN_ARROW) {
-    if (s.yspeed !== -1) {
-      s.dir(0, 1);
-    }
-  } else if (keyCode == LEFT_ARROW) {
-    if (s.xspeed !== 1) {
-      s.dir(-1, 0);
-    }
-  } else if (keyCode == RIGHT_ARROW) {
-    if (s.xspeed !== -1) {
-      s.dir(1, 0);
-    }
-  }
-}*/
-
 // krijg socket gegevens
 
 socket.on('inputChange', (data) => {
   console.log(data);
+
   switch (data.button) {
     case 'up':
       if (s.yspeed !== 1) {
@@ -126,6 +107,12 @@ socket.on('inputChange', (data) => {
       if (s.xspeed !== -1) {
         s.dir(1, 0);
       }
+      break;
+    case 'potentiometer':
+      frameRate((data.potentiometer / 1023) * 45 + 5);
+      break;
+    default:
+      console.log("default");
       break;
   }
 });

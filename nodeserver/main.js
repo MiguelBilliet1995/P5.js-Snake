@@ -1,6 +1,7 @@
 const port = 5000;
 const express = require('express');
 const socket = require('socket.io');
+var MidiPlayer = require('midi-player-js');
 var five = require('johnny-five'),
     board = new five.Board();
 
@@ -22,13 +23,44 @@ board.on('ready', function () {
 
         // button presses
         this.pinMode(0, five.Pin.ANALOG); // potentiometer
-        this.pinMode(1, five.Pin.ANALOG); // photoresistor
         this.pinMode(2, five.Pin.INPUT); // left
         this.pinMode(4, five.Pin.INPUT); // down
         this.pinMode(7, five.Pin.INPUT); // right
         this.pinMode(8, five.Pin.INPUT); // up
-        this.pinMode(12, five.Pin.INPUT); // reset
-        this.pinMode(13, five.Pin.INPUT); // select
+
+        this.pinMode(5, five.Pin.PWM); // buzzer
+
+        // buze test
+
+        //this.analogWrite(5, 0);
+
+        var Player = new MidiPlayer.Player(function (event) {
+            board.analogWrite(5, event.noteNumber);
+        });
+
+        /*Player.loadFile('midi/imperial.mid');
+        Player.play();*/
+
+
+        // inputs
+
+        let oldVoltage = 10;
+
+
+        this.analogRead(0, function (voltage) {
+            bufferValue = 10;
+            minValue = oldVoltage - bufferValue;
+            maxValue = oldVoltage + bufferValue;
+            if (!(minValue <= voltage && maxValue >= voltage)) {
+                io.sockets.emit('inputChange', {
+                    button: "potentiometer",
+                    potentiometer: voltage
+                });
+                console.log(voltage);
+                oldVoltage = voltage;
+            }
+
+        });
 
         this.digitalRead(4, function (value) {
             if (value === 1) {
