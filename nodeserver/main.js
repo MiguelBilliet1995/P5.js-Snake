@@ -1,7 +1,6 @@
 const port = 5000;
 const express = require('express');
 const socket = require('socket.io');
-var MidiPlayer = require('midi-player-js');
 var five = require('johnny-five'),
     board = new five.Board();
 
@@ -30,19 +29,26 @@ board.on('ready', function () {
 
         this.pinMode(5, five.Pin.PWM); // buzzer
 
-        // buze test
 
-        //this.analogWrite(5, 0);
+        // inputs van spel
 
-        var Player = new MidiPlayer.Player(function (event) {
-            board.analogWrite(5, event.noteNumber);
+        socket.on('sound', (data) => {
+            switch (data.type) {
+                case 'eat':
+                    board.analogWrite(5, 250);
+                    setTimeout(function () {
+                        board.analogWrite(5, 0);
+                    }, 200);
+                    break;
+                case 'dead':
+                    board.analogWrite(5, 100);
+                    setTimeout(function () {
+                        board.analogWrite(5, 0);
+                    }, 500);
+                default:
+                    break;
+            }
         });
-
-        /*Player.loadFile('midi/imperial.mid');
-        Player.play();*/
-
-
-
 
         // inputs
 

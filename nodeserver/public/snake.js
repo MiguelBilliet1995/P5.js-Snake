@@ -44,6 +44,7 @@ function Snake() {
         //frameRate(framert);
         this.targetScore = 5
         this.snakeColor = [255, 255, 255];
+        // stuur naar server
       }
     }
   }

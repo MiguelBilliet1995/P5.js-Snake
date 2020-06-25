@@ -59,6 +59,10 @@ function draw() {
   if (f.eat() === true) {
     pickLocation();
     requestSpecial();
+    // stuur naar server
+    socket.emit('sound', {
+      type: 'eat'
+    });
   }
 
   if (f_special.eat() === true) {
